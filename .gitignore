@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+.env.*
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Project runtime
+/data/chroma/
+/data/uploads/
+*.log
+
+# IDE
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

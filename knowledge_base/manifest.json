@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "source_registry": "sources.yaml",
+  "notes": "Only verified official-host pages and documents are configured. Sync results record unavailable sources rather than substituting summaries."
+}

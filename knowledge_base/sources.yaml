@@ -1,0 +1,30 @@
+sources:
+  - id: sebi_scores_faq
+    name: SEBI SCORES FAQs
+    type: official
+    url: "https://scores.sebi.gov.in/faqs"
+    allowed_domain: "scores.sebi.gov.in"
+
+  - id: sebi_scores_grievance_circular
+    name: SEBI Circular - Redressal of investor grievances through SCORES
+    type: official
+    url: "https://www.sebi.gov.in/legal/circulars/sep-2023/redressal-of-investor-grievances-through-the-sebi-complaint-redressal-scores-platform-and-linking-it-to-online-dispute-resolution-platform_77159.html"
+    allowed_domain: "sebi.gov.in"
+
+  - id: sebi_investor_support
+    name: SEBI Investor Support
+    type: official
+    url: "https://investor.sebi.gov.in/Investor-support.html"
+    allowed_domain: "investor.sebi.gov.in"
+
+  - id: sebi_market_nomination
+    name: SEBI Investor - Market Nomination
+    type: official
+    url: "https://investor.sebi.gov.in/market-nomination.html"
+    allowed_domain: "investor.sebi.gov.in"
+
+  - id: iepf_official_portal
+    name: IEPF Official Portal
+    type: official
+    url: "https://www.iepf.gov.in/"
+    allowed_domain: "iepf.gov.in"
