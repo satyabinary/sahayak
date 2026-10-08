@@ -39,7 +39,11 @@ class Settings:
         )
 
 
-settings = Settings.from_env()
+try:
+    settings = Settings.from_env()
+except ValueError:
+    # Don't crash at import time; app.py / API show a clear message when the key is missing.
+    settings = Settings(gemini_api_key="")
 
 
 def ensure_directories() -> None:
