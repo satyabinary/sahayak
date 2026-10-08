@@ -109,6 +109,23 @@ def _safe_sources(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+def _sources_from_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Retriever results keep source details inside item["metadata"]; flatten them first."""
+    return _safe_sources(
+        [
+            {
+                "source_name": (item.get("metadata") or {}).get("source_name"),
+                "source_url": (item.get("metadata") or {}).get("source_url"),
+                "document_title": (item.get("metadata") or {}).get("document_title"),
+                "page_number": (item.get("metadata") or {}).get("page_number"),
+                "section": (item.get("metadata") or {}).get("section"),
+                "relevance": item.get("relevance"),
+            }
+            for item in matches
+        ]
+    )
+
+
 def _raise_service_error(error: Exception) -> None:
     logger.error("api_service_failed error_type=%s", type(error).__name__)
     if isinstance(error, GeminiRateLimitError):
@@ -259,7 +276,7 @@ def create_complaint_draft(request: ComplaintRequest) -> dict[str, Any]:
         draft = GeminiClient().generate_text(prompt, temperature=0.2)
         return {
             "draft": draft,
-            "sources": _safe_sources(matches),
+            "sources": _sources_from_matches(matches),
             "verified_sources_available": True,
         }
     except Exception as error:
@@ -311,7 +328,7 @@ def iepf_guidance(request: IepfRequest) -> dict[str, Any]:
         )
         return {
             "answer": answer,
-            "sources": _safe_sources(results),
+            "sources": _sources_from_matches(results),
         }
     except Exception as error:
         _raise_service_error(error)
