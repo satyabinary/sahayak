@@ -187,15 +187,23 @@ def render_complaint_draft() -> None:
         with st.spinner("Preparing the complaint draft..."):
             try:
                 retriever = get_retriever()
-                matching = retriever.retrieve_relevant_documents(case.get("issue_category", "investor grievance guidance"), top_k=4)
+                query = case.get("issue_category") or case.get("description") or "investor grievance guidance"
+                matching = retriever.retrieve_relevant_documents(query, top_k=4)
                 context = "\n\n".join(item["content"] for item in matching)
                 helper_prompt = f"Generate a complaint draft using only the provided case data and the retrieved official-source context.\nCase data:\n{json.dumps(case, ensure_ascii=False)}\n\nContext:\n{context}\n\nDo not invent missing facts."
-                draft_text = get_gemini_client().generate_text(helper_prompt, temperature=0.2, max_output_tokens=1200)
-                st.text_area("Draft", draft_text, height=400)
-                st.download_button("Download as PDF", generate_pdf(draft_text), file_name="complaint_draft.pdf", mime="application/pdf")
+                st.session_state.complaint_draft = get_gemini_client().generate_text(helper_prompt, temperature=0.2, max_output_tokens=1200)
             except Exception as exc:
                 logger.exception("Complaint generation failed: %s", safe_log_data(str(exc)))
                 st.error("The complaint draft could not be generated. Please check the case details and try again.")
+    # Keep the draft in session_state so it survives the rerun triggered by the download button.
+    draft_text = st.session_state.get("complaint_draft")
+    if draft_text:
+        draft_text = st.text_area("Draft", draft_text, height=400)
+        try:
+            st.download_button("Download as PDF", generate_pdf(draft_text), file_name="complaint_draft.pdf", mime="application/pdf")
+        except Exception as exc:
+            logger.error("PDF generation failed error_type=%s", type(exc).__name__)
+            st.error("The draft contains text that could not be rendered in the PDF.")
 
 
 def render_iepf_guidance() -> None:
