@@ -20,7 +20,7 @@ UNVERIFIED_RESPONSE = (
 )
 
 _REGULATORY_TERMS = re.compile(
-    r"\b("
+    r"(?<!\w)("
     r"broker|broking|intermediar(?:y|ies)|sebi|scores|complaint|grievance|funds?|"
     r"investor|shares?|demat|depository|dp id|client id|nominee|nomination|"
     r"refund|unclaimed|iepf|claim|dividend|securities|trade|transaction|"
@@ -28,7 +28,7 @@ _REGULATORY_TERMS = re.compile(
     r"शिकायत|शेयर|ब्रोकर|सेबी|नामांकित|नॉमिनी|डिमैट|रिफंड|"
     r"mera broker|meri complaint|mera fund|mere paise|kya kar(?:u|na)|kaise kar(?:u|e|en)|"
     r"mujhe kya karna|response nahi|reply nahi"
-    r")\b",
+    r")(?!\w)",
     re.IGNORECASE,
 )
 
