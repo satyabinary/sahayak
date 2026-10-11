@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 
 from fpdf import FPDF
+from fpdf.enums import XPos, YPos
 
 
 def _unicode_font_path() -> Path:
@@ -37,7 +38,7 @@ def generate_pdf(content: str) -> bytes:
     lines = content.splitlines()
     for line in lines:
         if line.strip():
-            pdf.multi_cell(0, 8, line)
+            pdf.multi_cell(0, 8, line, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         else:
             pdf.ln(5)
     buffer = BytesIO()
