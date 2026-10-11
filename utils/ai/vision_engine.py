@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 
 from utils.ai.gemini_client import GeminiClient
 from utils.ai.schemas import VisionExtraction
@@ -20,8 +21,10 @@ class VisionEngine:
         If uncertain, leave the value blank and note it in warnings.
         """.strip()
         raw = self.client.analyze_image(image_path, prompt)
+        # Gemini often wraps JSON in ```json fences; strip them before parsing.
+        cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip(), flags=re.IGNORECASE)
         try:
-            payload = json.loads(raw)
+            payload = json.loads(cleaned)
         except json.JSONDecodeError:
             payload = {
                 "broker_name": None,
